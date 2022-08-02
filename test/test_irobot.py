@@ -11,7 +11,6 @@ class Test(TestCase):
         self.assertEqual(Heading.North, robot.heading)
         self.assertEqual(Point(0, 0), robot.position)
 
-    @unittest.skip
     def test_move_backward(self):
         robot = IRobot(targets={}, heading=Heading.South, position=Point(0, 1))
         robot.navigate([Step.Backward])

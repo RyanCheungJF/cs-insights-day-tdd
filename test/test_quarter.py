@@ -2,7 +2,6 @@ from unittest import TestCase
 
 from insights.quarter import to_quarter
 
-
 class Test(TestCase):
     def test_to_quarter_validMonth(self):
         dateDict = {
