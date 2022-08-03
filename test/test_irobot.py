@@ -17,14 +17,12 @@ class Test(TestCase):
         self.assertEqual(Heading.South, robot.heading)
         self.assertEqual(Point(0, 0), robot.position)
 
-    @unittest.skip
     def test_rotate_left(self):
         robot = IRobot(targets={}, heading=Heading.East, position=Point(0, 0))
         robot.navigate([Step.Rotate_Left])
         self.assertEqual(Heading.North, robot.heading)
         self.assertEqual(Point(0, 0), robot.position)
 
-    @unittest.skip
     def test_rotate_right(self):
         robot = IRobot(targets={}, heading=Heading.East, position=Point(0, 0))
         robot.navigate([Step.Rotate_Right])

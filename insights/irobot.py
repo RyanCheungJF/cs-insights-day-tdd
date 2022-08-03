@@ -46,6 +46,28 @@ class IRobot:
             self.position = Point(self.position.x - (dir * 1), self.position.y)
         else:
             raise Exception
+        
+    def changeDirection(self, step: Step):
+        if step == Step.Rotate_Left:
+            if self.heading == Heading.North:
+                self.heading = Heading.West
+            elif self.heading == Heading.South:
+                self.heading = Heading.East
+            elif self.heading == Heading.East:
+                self.heading = Heading.North
+            elif self.heading == Heading.West:
+                self.heading = Heading.South
+        elif step == Step.Rotate_Right:
+            if self.heading == Heading.North:
+                self.heading = Heading.East
+            elif self.heading == Heading.South:
+                self.heading = Heading.West
+            elif self.heading == Heading.East:
+                self.heading = Heading.South
+            elif self.heading == Heading.West:
+                self.heading = Heading.North    
+        else:
+            raise Exception
 
     def navigate(self, steps: list[Step]):
         for step in steps:
@@ -53,5 +75,7 @@ class IRobot:
                 self.moveBot(1)
             elif step == Step.Backward:
                 self.moveBot(-1)
+            elif step == Step.Rotate_Left or step == Step.Rotate_Right:
+                self.changeDirection(step)
             else:
                 raise Exception
