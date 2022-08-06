@@ -29,41 +29,37 @@ class Test(TestCase):
         self.assertEqual(Heading.South, robot.heading)
         self.assertEqual(Point(0, 0), robot.position)
 
-    @unittest.skip
     def test_can_go_forward(self):
         robot = IRobot(targets={Point(0, 0): '*', Point(1, 0): 'a'}, heading=Heading.North, position=Point(0, 1))
         self.assertEqual([
             Step.Forward
         ], robot >> '*')
 
-    @unittest.skip
     def test_can_go_backward(self):
         robot = IRobot(targets={Point(0, 0): '*', Point(1, 0): 'a'}, heading=Heading.East, position=Point(1, 0))
         self.assertEqual([
             Step.Backward
         ], robot >> '*')
 
-    @unittest.skip
     def test_can_go_left(self):
         robot = IRobot(targets={Point(0, 0): '*', Point(1, 0): 'a'}, heading=Heading.North, position=Point(1, 0))
         self.assertEqual([
             Step.Rotate_Left, Step.Forward
         ], robot >> '*')
 
-    @unittest.skip
     def test_can_go_right(self):
         robot = IRobot(targets={Point(0, 0): '*', Point(1, 0): 'a'}, heading=Heading.North, position=Point(0, 0))
         self.assertEqual([
             Step.Rotate_Right, Step.Forward
         ], robot >> 'a')
 
-    @unittest.skip
     def test_can_navigate(self):
         robot = IRobot(targets={Point(0, 0): '*', Point(2, 0): 'a'}, heading=Heading.East, position=Point(0, 0))
         robot.navigate(robot >> 'a')
         self.assertEqual(Heading.East, robot.heading)
         self.assertEqual(Point(2, 0), robot.position)
 
+    # not sure why this is unreachable, as there seems to be a path
     @unittest.skip
     def test_unreachable(self):
         targets = {
