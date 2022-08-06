@@ -25,6 +25,32 @@ class Heading(Enum):
     South = 'South'
     East = 'East'
     West = 'West'
+    
+    def moveBot(self, dir: int, x:int, y:int) -> Point:
+        match self:
+            case Heading.North:
+                return Point(x, y - (dir * 1))
+            case Heading.South:
+                return Point(x, y + (dir * 1))
+            case Heading.East:
+                return Point(x + (dir * 1), y)
+            case Heading.West:
+                return Point(x - (dir * 1), y)
+            case _:
+                raise Exception
+    
+    def changeDirection(self, step: Step) -> Heading:
+        match (self, step):
+            case (Heading.North, Step.Rotate_Left) | (Heading.South, Step.Rotate_Right):
+                return Heading.West
+            case (Heading.South, Step.Rotate_Left) | (Heading.North, Step.Rotate_Right):
+                return Heading.East
+            case (Heading.East, Step.Rotate_Left) | (Heading.West, Step.Rotate_Right):
+                return Heading.North
+            case (Heading.West, Step.Rotate_Left) | (Heading.East, Step.Rotate_Right):
+                return Heading.South
+            case _:
+                raise Exception
 
 @dataclass
 class IRobot:
@@ -34,48 +60,14 @@ class IRobot:
 
     def __rshift__(self, target: str) -> list[Step]:
         raise Exception
-    
-    def moveBot(self, dir: int) -> Point:
-        if self.heading == Heading.North:
-            self.position = Point(self.position.x, self.position.y - (dir * 1))
-        elif self.heading == Heading.South:
-            self.position = Point(self.position.x, self.position.y + (dir * 1))
-        elif self.heading == Heading.East:
-            self.position = Point(self.position.x + (dir * 1), self.position.y)
-        elif self.heading == Heading.West:
-            self.position = Point(self.position.x - (dir * 1), self.position.y)
-        else:
-            raise Exception
-        
-    def changeDirection(self, step: Step):
-        if step == Step.Rotate_Left:
-            if self.heading == Heading.North:
-                self.heading = Heading.West
-            elif self.heading == Heading.South:
-                self.heading = Heading.East
-            elif self.heading == Heading.East:
-                self.heading = Heading.North
-            elif self.heading == Heading.West:
-                self.heading = Heading.South
-        elif step == Step.Rotate_Right:
-            if self.heading == Heading.North:
-                self.heading = Heading.East
-            elif self.heading == Heading.South:
-                self.heading = Heading.West
-            elif self.heading == Heading.East:
-                self.heading = Heading.South
-            elif self.heading == Heading.West:
-                self.heading = Heading.North    
-        else:
-            raise Exception
 
     def navigate(self, steps: list[Step]):
         for step in steps:
             if step == Step.Forward:
-                self.moveBot(1)
+                self.position = self.heading.moveBot(1, self.position.x, self.position.y)
             elif step == Step.Backward:
-                self.moveBot(-1)
+                self.position = self.heading.moveBot(-1, self.position.x, self.position.y)
             elif step == Step.Rotate_Left or step == Step.Rotate_Right:
-                self.changeDirection(step)
+                self.heading = self.heading.changeDirection(step)
             else:
                 raise Exception
